@@ -1863,7 +1863,7 @@ span.tour-amount-old{
 }
 
 .tour-reserve{
-  pointer-events: auto;
+  /* pointer-events: auto; */
   height: 2.5rem;
   width: calc(100% - 56px);
   cursor: pointer;
@@ -1889,7 +1889,7 @@ span.tour-amount-old{
 
 @media (min-width: 992px){
   .tour-reserve{
-    pointer-events: none;
+    /* pointer-events: none; */
   }
 
   .tour-reserve{

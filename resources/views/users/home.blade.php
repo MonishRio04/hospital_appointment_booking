@@ -162,23 +162,22 @@
                 <div class="tour-receipt">
                     <div class="">
                         <div class="max-w-md mx-auto">
-                            <form class="bg-white px-2 pt-4 pb-4 mb-4 apointment-form" method="POST" action="{{ url('book-now') }}">
+                            <form class="bg-white px-2 pt-4 pb-4 mb-4 appointment-form" method="POST" action="{{ url('book-now') }}">
                                 @csrf
                                 <div class="mb-4">
-                                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                                    <input type="text" id="name" name="name" placeholder="Enter your name"
+                                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name <span class="text-red-700">*</span></label>
+                                    <input type="text" id="name" name="name" placeholder="Enter your name" required
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="dob" class="block text-gray-700 text-sm font-bold mb-2">Date of
+                                    <label for="dob" class="block text-gray-700 text-sm font-bold mb-2" max="{{ date('Y-m-d') }}">Date of
                                         Birth</label>
                                     <input type="date" id="dob" name="dob"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Phone
-                                        Number</label>
-                                    <input type="tel" id="phone" name="phone" placeholder="+919876543210"
+                                    <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Phone <span class="text-red-700">*</span></label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+919876543210" required
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                                 </div>
                                 <div class="mb-4">
@@ -192,7 +191,7 @@
                                     </select>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="datetime" class="block text-gray-700 text-sm font-bold mb-2">Preferred
+                                    <label for="datetime" class="block text-gray-700 text-sm font-bold mb-2" min="{{ date('Y-m-d') }}">Preferred
                                         Date & Time</label>
                                     <input type="datetime-local" id="datetime" name="datetime"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
@@ -211,10 +210,23 @@
     </div>
     @push('scripts')
         <script>
-            $('.appointment-form').validate();
+            $('.appointment-form').validate({
+                messages:{
+                    name:'Name is required',
+                    phone:'Phone is required'
+                }
+            });
             $('.book-now').on('click',function(){
                 if($('.appointment-form').valid()){
-                    alert()
+                    let val=$('.appointment-form').serialize();
+                    $.ajax({
+                        url:"{{ url('book-now') }}",
+                        type:"POST",
+                        data:val,
+                        success:function(res){
+
+                        }
+                    })
                 }
             })
         </script>

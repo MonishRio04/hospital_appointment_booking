@@ -15,3 +15,4 @@ use App\Http\Controllers\DashboardController;
 // Route::get('/',[DashboardController::class,'index']);
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::pOst('book-now', [App\Http\Controllers\HomeController::class, 'bookNow']);

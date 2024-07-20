@@ -25,4 +25,7 @@ class HomeController extends Controller
     {
         return view('users.home');
     }
+    public function bookNow(Request $request){
+        dd($request->all());
+    }
 }

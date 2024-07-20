@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.error{
+    color: #c60909;
+    font-size: small;
+}
