@@ -1,8 +1,10 @@
 <div class="header fixed w-full z-[40] mb-[50px]">
     <div class="container">
         <div class="header-logo">
-            {{-- <span class="material-icons-outlined">home_health</span> --}}
-            {{ env('APP_NAME') }}
+            <span class="material-icons text-red-400 !text-[50px]">
+                vaccines
+            </span>
+            <span class="mx-2">{{ env('APP_NAME') }}</span>
         </div>
         <!-- header-logo -->
         <div class="menu-toggle">

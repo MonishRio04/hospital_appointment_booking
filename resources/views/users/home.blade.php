@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="tour container">
-        <div class="tour-head">
+        <div class="tour-head !my-4">
             <div class="tour-head-left">
                 <div class="tour-title">
                     Book your Appointment and Feel Free
@@ -18,8 +18,10 @@
                 </div>
             </div>
         </div>
+        <div class="my-2">
+            <marquee class="text-gray-500" behavior="scroll">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</marquee>
+        </div>
         <!-- tour head -->
-
         <div class="tour-wrapper">
             <div class="tour-content">
                 <div class="tour-hero">
@@ -179,6 +181,12 @@
                                     <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Phone <span class="text-red-700">*</span></label>
                                     <input type="tel" id="phone" name="phone" placeholder="+919876543210" required
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                                        <span class="text-red-600 text-sm phone-error"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email </label>
+                                    <input type="text" id="email" name="email" placeholder="example@mail.com"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                                 </div>
                                 <div class="mb-4">
                                     <label for="category"
@@ -196,8 +204,14 @@
                                     <input type="datetime-local" id="datetime" name="datetime"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
                                 </div>
+                                <div class="mb-4">
+                                    <label for="message" class="block text-gray-700 text-sm font-bold mb-2" min="{{ date('Y-m-d') }}">Message <span class="text-gray-500 italic font-medium">(optional)</span></label>
+                                    <textarea id="message" name="message" rows="4" cols=""
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"></textarea>
+                                </div>
                                 <div class="flex justify-center mt-6">
                                     <button type="button" class="cursor-pointer book-now tour-reserve">Book Now</button>
+                                    <button style="display: none " type="button" class="cursor-pointer tour-reserve !bg-green-400">Booked</button>
                                 </div>
                             </form>
                         </div>
@@ -217,6 +231,7 @@
                 }
             });
             $('.book-now').on('click',function(){
+                let elem=this;
                 if($('.appointment-form').valid()){
                     let val=$('.appointment-form').serialize();
                     $.ajax({
@@ -224,7 +239,12 @@
                         type:"POST",
                         data:val,
                         success:function(res){
-
+                            if(res.success){
+                                $(elem).hide();
+                                $(elem).next().show();
+                            }else{
+                                $('.phone-error').text(res.message);
+                            }
                         }
                     })
                 }

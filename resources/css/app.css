@@ -5,3 +5,10 @@
     color: #c60909;
     font-size: small;
 }
+.bg-primary{
+    background-color: #F87171 !important;
+    color: #fff !important;
+}
+.text-primary{
+    color :#F87171 !important;
+}

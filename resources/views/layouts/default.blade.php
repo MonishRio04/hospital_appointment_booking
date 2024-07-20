@@ -11,7 +11,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.css"/>
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -22,7 +22,6 @@
 
 <body>
     <div id="app">
-        @include('users.includes.header')
         <main class="py-4">
             <div class="mt-[80px]">
                 @yield('content')
@@ -30,6 +29,13 @@
         </main>
         <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
         <script src="{{ asset('assets/js/jquery-validate.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script>
+            toastr.options = {
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "timeOut": "3000"
+            };
         @stack('scripts')
     </div>
 </body>
