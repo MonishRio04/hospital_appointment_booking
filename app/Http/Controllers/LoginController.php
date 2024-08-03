@@ -35,9 +35,21 @@ class LoginController extends Controller
             \Log::info($e->getMessage());
         }
         \Auth::loginUsingId($id);
-        return $this->loggedIn();
+        return response()->json(['success'=>true,'message'=>'User Logged in successfully']);//Data OAuth2
+    }
+    public function signIn(Request $request){
+        $rules = [
+            'email' => 'required|email|',
+            'password' => 'required|string|min:8',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if(\Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            return response()->json(['success'=>true,'message'=>'User Logged in successfully']);//Data OAuth2
+        }else{
+            return response()->json(['success'=>true,'message'=>"User Doesn't Exists"]);
+        }
     }
     public function loggedIn(){
-        return response()->json(['success'=>true,'message'=>'User Logged in successfully']);
+        return response()->json(['success'=>true,'message'=>'User Logged in successfully','data'=>Auth::user()]);
     }
 }
