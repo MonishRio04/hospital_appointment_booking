@@ -15,10 +15,10 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         $user = User::where('email', $credentials['email'])->first();
         if (!$user || !\Hash::check($credentials['password'], $user->password)) {
-            return back()->with('success','Invalid Login Details');
+            return back()->with('error','Invalid Login Details');
         }
         \Auth::login($user);
-        return view('admin.dashboard');
+        return redirect()->to('admin/dashboard');
     }
     public function forgetPassword(Request $request){
         $request->validate([
@@ -58,5 +58,10 @@ class LoginController extends Controller
                     ->update(['password' => \Hash::make($request->password)]);
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
         return redirect()->to('admin/login');
+    }
+    public function signOut(){
+        \Auth::logout();
+        return redirect()->route('login');
+
     }
 }

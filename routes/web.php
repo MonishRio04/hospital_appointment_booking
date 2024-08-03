@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,10 +16,12 @@ use App\Http\Controllers\DashboardController;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('book-now', [App\Http\Controllers\HomeController::class, 'bookNow']);
 // Admin Portal
-Route::get('admin/login',[App\Http\Controllers\Admin\LoginController::class, 'login']);
+Route::get('admin/login',[App\Http\Controllers\Admin\LoginController::class, 'login'])->name('login');
 Route::post('admin/login',[App\Http\Controllers\Admin\LoginController::class, 'loginPost']);
 Route::post('forget-password',[App\Http\Controllers\Admin\LoginController::class, 'forgetPassword']);
 Route::get('reset-password/{token}',[App\Http\Controllers\Admin\LoginController::class, 'resetPassword']);
 Route::post('change-password',[App\Http\Controllers\Admin\LoginController::class, 'changePassword']);
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('dashboard',[DashboardController::class,'index']);
+    Route::get('sign-out',[App\Http\Controllers\Admin\LoginController::class, 'signOut']);
 });
