@@ -17,4 +17,9 @@ use App\Http\Controllers\LoginController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('signup',[LoginController::class,'sigUp']);
+Route::post('sign-up',[LoginController::class,'signUp']);
+Route::get('sign-in',[LoginController::class,'signIn']);
+Route::middleware('auth:api')->group(function () {
+    Route::get('logged-in', [LoginController::class,'loggedIn']);
+    // Other authenticated routes...
+});
