@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\RegisterMail;
-use App\Model\User;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -27,15 +27,18 @@ class LoginController extends Controller
             'role_id'=>2,
             'name'=>$request->name,
             'email'=>$request->email,
-            'password'=>Hash::make($request->password),
+            'password'=>\Hash::make($request->password),
         ]);
         try{
             \Mail::to($request->email)->queue(new RegisterMail($request->all()));
         }catch(\Exception $e){
             \Log::info($e->getMessage());
         }
+        $user=User::find($id);
         \Auth::loginUsingId($id);
-        return response()->json(['success'=>true,'message'=>'User Logged in successfully']);//Data OAuth2
+        $token=$user->createToken('authToken');
+        $data=['message'=>'User Logged in successfully','token'=>$token];
+        return response()->json(['success'=>true,'data'=>$data]);
     }
     public function signIn(Request $request){
         $rules = [
@@ -44,12 +47,24 @@ class LoginController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         if(\Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            return response()->json(['success'=>true,'message'=>'User Logged in successfully']);//Data OAuth2
+            $user=User::find(\Auth::id());
+            $token=$user->createToken('authToken');
+            $data=['message'=>'User Logged in successfully','token'=>$token];
+            return response()->json(['success'=>true,'message'=>'User Logged in successfully','data'=>$data]);
         }else{
             return response()->json(['success'=>true,'message'=>"User Doesn't Exists"]);
         }
     }
-    public function loggedIn(){
-        return response()->json(['success'=>true,'message'=>'User Logged in successfully','data'=>Auth::user()]);
+    public function home(){
+        return response()->json(['success'=>true,'message'=>'User Logged in successfully','data'=>\Auth::user()]);
+    }
+    public function signOut(){
+        $tokenRepository = new \Laravel\Passport\TokenRepository();
+        $tokens = \DB::table('oauth_access_tokens')->where('user_id', \Auth::id())->get();
+
+        foreach ($tokens as $token) {
+            $tokenRepository->revokeAccessToken($token->id);
+        }
+        return response()->json(['success'=>true,'message'=>"User Sign out Successfully"]);
     }
 }

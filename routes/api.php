@@ -3,23 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+#Form Datas=[name,email,password]
 Route::post('sign-up',[LoginController::class,'signUp']);
-Route::get('sign-in',[LoginController::class,'signIn']);
-Route::middleware('auth:api')->group(function () {
-    Route::get('logged-in', [LoginController::class,'loggedIn']);
-    // Other authenticated routes...
+#Form Datas=[name,email]
+Route::post('sign-in',[LoginController::class,'signIn']);
+Route::middleware('auth:api')->group(function () { #Headers=[Authorization=>Bearer {token},Accept=>application/json]
+    Route::get('home', [LoginController::class,'home']);
+    Route::get('sign-out',[LoginController::class,'signOut']);
 });
